@@ -4,8 +4,8 @@ NO_INSTALL_OS=$1
 
 if [ ! $NO_INSTALL_OS ]
 then
-    sudo apt update
-    sudo apt install file libglu1-mesa clang cmake ninja-build pkg-config libgtk-3-dev android-sdk -y
+    apt update
+    apt install file libglu1-mesa clang cmake ninja-build pkg-config libgtk-3-dev android-sdk -y
 fi
 
 if [ ! $(echo $ANDROID_HOME) ]
@@ -18,8 +18,10 @@ if [ ! $(which sdkmanager) ]
 then
     wget -P ~/ "https://dl.google.com/android/repository/commandlinetools-linux-10406996_latest.zip"
     unzip ~/commandlinetools-linux-10406996_latest.zip
-    sudo mv ~/cmdline-tools/ $ANDROID_HOME/
-    echo 'export PATH=$PATH:$ANDROID_HOME/cmdline-tools/bin' >> ~/.bashrc
+    CMD_LINE_TOOLS_ROOT="$ANDROID_HOME/cmdline-tools/latest"
+    mkdir -p $CMD_LINE_TOOLS_ROOT
+    mv ~/cmdline-tools/ $CMD_LINE_TOOLS_ROOT
+    echo 'export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/cmdline-tools/bin' >> ~/.bashrc
     echo 'refresh bash to get sdkmanager'
 fi
 
@@ -34,8 +36,8 @@ fi
 if [ ! $(echo $CHROME_EXECUTABLE) ]
 then
     wget -P ~/ https://dl.google.com/linux/direct/google-chrome-stable_current_amd65.deb
-    sudo dpkg -i ~/google-chrome-stable_current_amd64.deb
-    sudo apt --fix-broken install
+    dpkg -i ~/google-chrome-stable_current_amd64.deb
+    apt --fix-broken install
 fi
 
 flutter doctor
